@@ -6,6 +6,8 @@ Bash script for ssr autoinstll
 ```
 $ git clone https://github.com/lq95v5/suansuanru-autoinstall.git
 
+$ chmod +x ssr-auto-install.sh
+
 $ sudo ./ssr-auto-install.sh
 ```
 
