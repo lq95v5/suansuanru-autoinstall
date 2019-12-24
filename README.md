@@ -4,7 +4,7 @@ Bash script for ssr autoinstall
 
 # How to use
 ```
-$ git clone https://github.com/lq95v5/suansuanru-autoinstall.git
+$ wget https://raw.githubusercontent.com/lq95v5/suansuanru-autoinstall/master/ssr-auto-install.sh
 
 $ chmod +x ssr-auto-install.sh
 
