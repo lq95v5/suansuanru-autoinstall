@@ -1,14 +1,11 @@
 #!/bin/bash
-
 user=$(whoami)
-
 if [ $user != root ]
 then
 	echo "Please run this script with sudo"
 fi
 # Install dependencies
 apt install -y python3 libssl-dev git 2> /dev/null || yum install git python3 -y 2> /dev/null 
-
 # Clone the repo
 if [ $? -eq 0 ] 
 then
@@ -16,9 +13,7 @@ then
 else
 	exit
 fi
-
 # Choose server encryption method
-
 function encryptmethod {
 	echo -e "\t\t\tPlease choose your server encryption method\n"
 	echo -e "\t1. none"
@@ -27,9 +22,7 @@ function encryptmethod {
 	read -n 1 -p "Type your option[none]:" method
 	echo -e "\n"
 }
-
 encryptmethod 
-
 case ${method} in
 	0)
 		break ;;
@@ -44,8 +37,6 @@ if [ -z "${method}" ]
 then
 	method="none"
 fi
-
-
 # Server password
 function ssrpassword {
 	old_kpasswd=`head -c 100 /dev/urandom | tr -dc a-z0-9A-Z |head -c 8`
@@ -66,9 +57,7 @@ function ssrport {
 	fi
 	echo -e "\n"
 }
-
 ssrport
-
 if [ ${pport} -gt 65535 ] || [ ${pport} -lt 0 ]
 then 
 	echo "You have wrong port number! Exit"
@@ -84,9 +73,7 @@ function ssrobfs {
 	read -n 1 -p "Choose your obfsplugin[plain]:" oobfs
 	echo -e "\n"
 }
-
 ssrobfs 
-
 case ${oobfs} in 
 	0)
 		break ;;
@@ -109,9 +96,7 @@ function ssrprotocol {
        read -n 1 -p "Enter your option[auth_chain_a]:" oprotocol
        echo -e "\n"
 }
-
 ssrprotocol
-
 case ${oprotocol} in
 	0) 
 		break ;;
@@ -124,7 +109,6 @@ case ${oprotocol} in
 	*)
 		oprotocol=auth_chain_a ;;
 esac
-
 # setup ssr systemd unit
 function setup_ssr_unit {
 cat /dev/null > /etc/systemd/system/suansuanru.service
@@ -134,7 +118,7 @@ echo "After=network.target" >> /etc/systemd/system/suansuanru.service
 echo "Wants=network.target" >> /etc/systemd/system/suansuanru.service
 echo -e "\n" >> /etc/systemd/system/suansuanru.service
 echo "[Service]" >> /etc/systemd/system/suansuanru.service
-echo "ExecStart=/usr/bin/python3 /usr/share/ssrr-python/shadowsocks/server.py -p ${pport} -k ${kpasswd} -m ${method} -O ${oprotocol} -o ${oobfs} " >> /etc/systemd/system/suansuanru.service
+echo "ExecStart=/usr/bin/python3 /usr/share/ssrr-python/shadowsocks/server.py -p ${pport} -k ${kpasswd} -m ${method} -O ${oprotocol} -o ${oobfs} --workers 4" >> /etc/systemd/system/suansuanru.service
 echo -e "\n" >> /etc/systemd/system/suansuanru.service
 echo "[Install]" >> /etc/systemd/system/suansuanru.service
 echo -e "WantedBy=multi-user.target" >> /etc/systemd/system/suansuanru.service
