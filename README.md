@@ -1,5 +1,5 @@
 # suansuanru-autoinstall
-Bash script for ssr autoinstll
+Bash script for ssr autoinstall
 
 
 # How to use
